@@ -5,7 +5,7 @@ resource "google_service_account" "data-layer-bigquery" {
 
 resource "google_project_iam_binding" "data-layer-bigquery" {
   project = var.project
-  role    = "roles/bigquery.editor"
+  role    = "roles/bigquery.dataEditor"
   members = [
     "serviceAccount:${google_service_account.data-layer-bigquery.email}"
   ]
