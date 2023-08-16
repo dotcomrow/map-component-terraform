@@ -3,7 +3,7 @@ terraform {
     organization = "dotcomrow"
 
     workspaces {
-      name = var.project
+      name = provider.project
     }
   }
 }
