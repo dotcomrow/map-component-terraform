@@ -90,7 +90,7 @@ resource "google_bigquery_routine" "get_row_id" {
 
 resource "google_bigquery_routine" "delete_record_from_delay_table" {
   dataset_id      = google_bigquery_dataset.map_component_dataset.dataset_id
-  routine_id      = "get_row_id"
+  routine_id      = "delete_record_from_delay_table"
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
