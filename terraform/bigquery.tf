@@ -1,12 +1,12 @@
-resource "google_bigquery_dataset" "map-component-dataset" {
-  dataset_id                  = "map-component-dataset"
+resource "google_bigquery_dataset" "map_component_dataset" {
+  dataset_id                  = "map_component_dataset"
   description                 = "Dataset for map component project"
   location                    = "US"
 }
 
-resource "google_bigquery_table" "map-component-poi-data" {
-  dataset_id = google_bigquery_dataset.map-component-dataset.dataset_id
-  table_id   = "map-component-poi-data"
+resource "google_bigquery_table" "map_component_poi_data" {
+  dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
+  table_id   = "map_component_poi_data"
 
   schema = <<EOF
 [
@@ -44,12 +44,12 @@ resource "google_bigquery_table" "map-component-poi-data" {
 EOF
 }
 
-resource "google_bigquery_routine" "get-row-id" {
-  dataset_id      = google_bigquery_dataset.map-component-dataset.dataset_id
-  routine_id      = "get-row-id"
+resource "google_bigquery_routine" "get_row_id" {
+  dataset_id      = google_bigquery_dataset.map_component_dataset.dataset_id
+  routine_id      = "get_row_id"
   routine_type    = "PROCEDURE"
   language        = "SQL"
-  definition_body = <<-EOS
-    SELECT 1 + count(ID) AS value FROM \`${google_bigquery_table.map-component-poi-data.dataset_id}.${google_bigquery_table.map-component-poi-data.table_id}\`;
+  definition_body = <<_EOS
+    SELECT 1 + count(ID) AS value FROM \`${google_bigquery_table.map_component_poi_data.dataset_id}.${google_bigquery_table.map_component_poi_data.table_id}\`;
   EOS
 }
