@@ -49,7 +49,7 @@ resource "google_bigquery_routine" "get_row_id" {
   routine_id      = "get_row_id"
   routine_type    = "PROCEDURE"
   language        = "SQL"
-  definition_body = <<_EOS
+  definition_body = <<-EOS
     SELECT 1 + count(ID) AS value FROM \`${google_bigquery_table.map_component_poi_data.dataset_id}.${google_bigquery_table.map_component_poi_data.table_id}\`;
   EOS
 }
