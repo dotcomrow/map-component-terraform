@@ -35,6 +35,20 @@ jobs:
         region="${{ vars.GCP_REGION }}" 
         project="${{ vars.GCP_PROJECT }}"
         EOF
+
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v3
+      with:
+        find: "<ORGANIZATION_ID>"
+        replace: ${{ vars.ORGANIZATION_ID }}
+        regex: false
+
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v3
+      with:
+        find: "<WORKSPACE_NAME>"
+        replace: ${{ vars.WORKSPACE_NAME }}
+        regex: false
         
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init

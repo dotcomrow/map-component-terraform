@@ -1,9 +1,9 @@
 terraform {
   cloud {
-    organization = "dotcomrow"
+    organization = "<ORGANIZATION_ID>"
 
     workspaces {
-      name = provider.project
+      name = "<WORKSPACE_NAME>"
     }
   }
 }
