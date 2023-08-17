@@ -25,7 +25,7 @@ resource "google_bigquery_table" "map_component_poi_data" {
   },
   {
     "name": "DATA",
-    "type": "STRUCT",
+    "type": "STRING",
     "mode": "REQUIRED",
     "description": "Data associated with POI"
   },
@@ -49,7 +49,7 @@ resource "google_bigquery_table" "map_component_poi_data_deletes" {
   dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
   table_id   = "map_component_poi_data_deletes"
   deletion_protection = false
-  
+
   schema = <<EOF
 [
   {
