@@ -7,6 +7,7 @@ resource "google_bigquery_dataset" "map_component_dataset" {
 resource "google_bigquery_table" "map_component_poi_data" {
   dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
   table_id   = "map_component_poi_data"
+  deletion_protection = false
 
   schema = <<EOF
 [
@@ -47,6 +48,8 @@ EOF
 resource "google_bigquery_table" "map_component_poi_data_deletes" {
   dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
   table_id   = "map_component_poi_data_deletes"
+  deletion_protection = false
+  
   schema = <<EOF
 [
   {
