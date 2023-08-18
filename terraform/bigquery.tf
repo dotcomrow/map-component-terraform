@@ -104,6 +104,7 @@ resource "google_bigquery_routine" "get_row_id" {
   language        = "SQL"
   definition_body = <<-EOS
     SELECT 1 + poi_seq AS value FROM `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.poi_seq.table_id}`;
+    UPDATE `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.poi_seq.table_id}` SET poi_seq = poi_seq + 1;
   EOS
 }
 
