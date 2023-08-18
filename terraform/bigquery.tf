@@ -80,13 +80,30 @@ resource "google_bigquery_table" "map_component_poi_data_deletes" {
 EOF
 }
 
+resource "google_bigquery_table" "poi_seq" {
+  dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
+  table_id   = "POI_SEQ"
+  deletion_protection = false
+
+  schema = <<EOF
+[
+  {
+    "name": "poi_seq",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "ID sequence for POI"
+  }
+]
+EOF
+}
+
 resource "google_bigquery_routine" "get_row_id" {
   dataset_id      = google_bigquery_dataset.map_component_dataset.dataset_id
   routine_id      = "get_row_id"
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
-    SELECT 1 + count(ID) AS value FROM `${google_bigquery_table.map_component_poi_data.dataset_id}.${google_bigquery_table.map_component_poi_data.table_id}`;
+    SELECT 1 + poi_seq AS value FROM `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.poi_seq.table_id}`;
   EOS
 }
 
