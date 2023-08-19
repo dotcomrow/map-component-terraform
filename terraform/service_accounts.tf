@@ -16,10 +16,10 @@ resource "google_service_account" "ol-layer" {
   display_name = "dol-layer"
 }
 
-# resource "google_project_iam_binding" "ol-layer" {
-#   project = var.project
-#   role    = "roles/bigquery.dataEditor"
-#   members = [
-#     "serviceAccount:${google_service_account.ol-layer.email}"
-#   ]
-# }
+resource "google_project_iam_binding" "ol-layer" {
+  project = var.project
+  role    = "roles/run.invoker"
+  members = [
+    "serviceAccount:${google_service_account.ol-layer.email}"
+  ]
+}
