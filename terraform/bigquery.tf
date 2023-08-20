@@ -25,7 +25,7 @@ resource "google_bigquery_table" "map_component_poi_data" {
   },
   {
     "name": "DATA",
-    "type": "STRING",
+    "type": "JSON",
     "mode": "REQUIRED",
     "description": "Data associated with POI"
   },
