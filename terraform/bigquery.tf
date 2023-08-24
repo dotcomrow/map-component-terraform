@@ -45,9 +45,9 @@ resource "google_bigquery_table" "map_component_poi_data" {
 EOF
 }
 
-resource "google_bigquery_table" "poi_seq" {
+resource "google_bigquery_table" "sequences" {
   dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
-  table_id   = "POI_SEQ"
+  table_id   = "sequences"
   deletion_protection = false
 
   schema = <<EOF
@@ -59,10 +59,33 @@ resource "google_bigquery_table" "poi_seq" {
     "description": "sequence name"
   },
   {
-    "name": "poi_seq",
+    "name": "seq_value",
     "type": "INTEGER",
     "mode": "REQUIRED",
-    "description": "ID sequence for POI"
+    "description": "sequence value"
+  }
+]
+EOF
+}
+
+resource "google_bigquery_table" "lookup_codes" {
+  dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
+  table_id   = "lookup_codes"
+  deletion_protection = false
+
+  schema = <<EOF
+[
+  {
+    "name": "code",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "sequence name"
+  },
+  {
+    "name": "value",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "sequence value"
   }
 ]
 EOF
@@ -74,7 +97,7 @@ resource "google_bigquery_routine" "get_row_id" {
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
-    UPDATE `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.poi_seq.table_id}` SET poi_seq = poi_seq + 1 WHERE seq_name = 'POI_SEQ';
-    SELECT poi_seq AS value FROM `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.poi_seq.table_id}` WHERE seq_name = 'POI_SEQ';
+    UPDATE `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.sequences.table_id}` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
+    SELECT seq_value AS value FROM `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.sequences.table_id}` WHERE seq_name = 'POI_SEQ';
   EOS
 }
