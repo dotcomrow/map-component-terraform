@@ -68,29 +68,6 @@ resource "google_bigquery_table" "sequences" {
 EOF
 }
 
-resource "google_bigquery_table" "lookup_codes" {
-  dataset_id = google_bigquery_dataset.map_component_dataset.dataset_id
-  table_id   = "lookup_codes"
-  deletion_protection = false
-
-  schema = <<EOF
-[
-  {
-    "name": "code",
-    "type": "STRING",
-    "mode": "REQUIRED",
-    "description": "sequence name"
-  },
-  {
-    "name": "value",
-    "type": "STRING",
-    "mode": "REQUIRED",
-    "description": "sequence value"
-  }
-]
-EOF
-}
-
 resource "google_bigquery_routine" "get_row_id" {
   dataset_id      = google_bigquery_dataset.map_component_dataset.dataset_id
   routine_id      = "get_row_id"
