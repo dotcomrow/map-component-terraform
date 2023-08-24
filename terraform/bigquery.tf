@@ -97,7 +97,7 @@ resource "google_bigquery_routine" "get_row_id" {
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
-    UPDATE `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.sequences.table_id}` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
-    SELECT seq_value AS value FROM `${google_bigquery_table.poi_seq.dataset_id}.${google_bigquery_table.sequences.table_id}` WHERE seq_name = 'POI_SEQ';
+    UPDATE `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
+    SELECT seq_value AS value FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` WHERE seq_name = 'POI_SEQ';
   EOS
 }
