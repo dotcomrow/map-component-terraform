@@ -74,16 +74,16 @@ resource "google_bigquery_routine" "get_row_id" {
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
-    DECLARE retValSeq int
-    DECLARE maxValData int
+    DECLARE retValSeq int;
+    DECLARE maxValData int;
 
     SELECT retValSeq = seq_value
     FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}`
-    WHERE seq_name = 'POI_SEQ'
+    WHERE seq_name = 'POI_SEQ';
 
     SELECT maxValData = max(ID)
     FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.map_component_poi_data.table_id}`
-    WHERE seq_name = 'POI_SEQ'
+    WHERE seq_name = 'POI_SEQ';
 
     IF (retValSeq > 0)
     BEGIN
