@@ -86,13 +86,9 @@ resource "google_bigquery_routine" "get_row_id" {
     WHERE seq_name = 'POI_SEQ';
 
     IF (retValSeq > 0)
-    BEGIN
         UPDATE `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
         SELECT seq_value AS value FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` WHERE seq_name = 'POI_SEQ';
-    END
     ELSE
-    BEGIN
-        INSERT INTO `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` (seq_name, seq_value) VALUES ('POI_SEQ', @maxValData + 1);
-    END 
+        INSERT INTO `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` (seq_name, seq_value) VALUES ('POI_SEQ', @maxValData + 1); 
   EOS
 }
