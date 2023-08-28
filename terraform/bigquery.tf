@@ -74,21 +74,18 @@ resource "google_bigquery_routine" "get_row_id" {
   routine_type    = "PROCEDURE"
   language        = "SQL"
   definition_body = <<-EOS
-    DECLARE retValSeq int;
-    DECLARE maxValData int;
+    DECLARE seq int64;
+    DECLARE max_id int64;
 
-    SELECT retValSeq = seq_value
-    FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}`
-    WHERE seq_name = 'POI_SEQ';
+    set seq = (SELECT seq_value FROM `global_config_dataset.sequences` WHERE seq_name = 'POI_SEQ');
+    set max_id = (SELECT max(id) FROM `global_config_dataset.lookup_codes`);
 
-    SELECT maxValData = max(ID)
-    FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.map_component_poi_data.table_id}`
-    WHERE seq_name = 'POI_SEQ';
-
-    IF (retValSeq > 0)
-        UPDATE `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
-        SELECT seq_value AS value FROM `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` WHERE seq_name = 'POI_SEQ';
+    IF seq IS NULL THEN
+      INSERT INTO `global_config_dataset.sequences` (seq_name, seq_value) VALUES ('POI_SEQ', max_id);
     ELSE
-        INSERT INTO `${google_bigquery_table.sequences.dataset_id}.${google_bigquery_table.sequences.table_id}` (seq_name, seq_value) VALUES ('POI_SEQ', @maxValData + 1); 
+      UPDATE `global_config_dataset.sequences` SET seq_value = seq_value + 1 WHERE seq_name = 'POI_SEQ';
+    END IF;
+
+    SELECT seq_value FROM `global_config_dataset.sequences` WHERE seq_name = 'POI_SEQ';
   EOS
 }
